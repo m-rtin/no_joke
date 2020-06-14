@@ -1,5 +1,3 @@
-import csv
-
 from bs4 import BeautifulSoup
 import requests
 
@@ -13,11 +11,11 @@ def main():
         soup = BeautifulSoup(response.content, features="html.parser")
         jokes = soup.findAll("section", {"class": "Article__content"})
 
-        with open('data.csv', mode='a+', newline='') as csv_file:
-            csv_writer = csv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-
+        with open('joke_sentences.txt', 'a') as txt_file:
             for joke in jokes:
-                csv_writer.writerow([joke.get_text().encode('utf-8')])
+                joke_text = joke.get_text()
+                joke_text = joke_text.replace("\n", " ")
+                txt_file.write(joke_text + '\n')
 
 
 if __name__ == "__main__":
